@@ -1,0 +1,8 @@
+.parent {
+    vertical-align: top;
+}
+
+.inline-block-child {
+    vertical-align: top;
+    display: inline-block;
+  }

@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Bathroom Designer</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+    </head>
+    <body>
+        <div id="icons">
+            <img id="tub-icon" src="/imgs/bathtub.png" width="100" height="100" draggable="true">
+            <img src="/imgs/toilet.png" width="100" height="100" draggable="true">
+        </div>
+        <form id="room-sizer">
+            <label for="width">Width</label>
+            <input name="width" id="width" type="number"></input>
+            <label for="length">Length</label>
+            <input name="length" id="length" type="number"></input>
+            <input type="submit" id="submit" value="Submit Dimensions"/>
+        </form>
+        <form id="room-loader">
+            <label for="existing-rooms">Room</label>
+            <select name="existing-rooms" id="existing-rooms"></select>
+            <input type="submit" id="loader-submit" value="Load Room">
+        </form>
+
+        <div class='parent' id="room-parent" hidden>
+            <canvas class='child inline-block-child' id="room" width="500" height="400" style="border:2px solid"></canvas>
+            <table id="item-list" class='child inline-block-child'>
+                <thead>
+                    <th>Item</th>
+                    <th>Rotate</th>
+                    <th>Resize</th>
+                    <th>Remove</th>
+                </thead>
+                <tbody id = "item-list-body">
+                </tbody>
+            </table>
+        </div>
+
+        <script src="index.js"></script>
+    </body>
+</html>

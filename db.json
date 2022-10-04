@@ -1,0 +1,11 @@
+{
+  "bathRooms": [
+    {
+      "id": -1,
+      "roomName": "Seed",
+      "length": 0,
+      "width": 0,
+      "elements": []
+    }
+  ]
+}
