@@ -23,16 +23,23 @@
 
         <div class='parent' id="room-parent" hidden>
             <canvas class='child inline-block-child' id="room" width="500" height="400" style="border:2px solid"></canvas>
-            <table id="item-list" class='child inline-block-child'>
-                <thead>
-                    <th>Item</th>
-                    <th>Rotate</th>
-                    <th>Resize</th>
-                    <th>Remove</th>
-                </thead>
-                <tbody id = "item-list-body">
-                </tbody>
-            </table>
+            <div class='child inline-block-child'>
+                <table id="item-list">
+                    <thead>
+                        <th>Item</th>
+                        <th>Rotate</th>
+                        <th>Resize</th>
+                        <th>Remove</th>
+                    </thead>
+                    <tbody id = "item-list-body">
+                    </tbody>
+                </table>
+                <form id="room-saver">
+                    <label for="new-room-name">Room Name</label>
+                    <input name="new-room-name" id="new-room-name"/>
+                    <input type="submit" id="new-room-submit" value="Save Room"/>
+                </form>
+            </div>
         </div>
 
         <script src="index.js"></script>

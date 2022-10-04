@@ -25,9 +25,7 @@ const loadRooms = () => {
     then(res => res.json()).
     then(rooms => {
         const roomsDD = document.getElementById("existing-rooms")
-        console.log(roomsDD)
         rooms.forEach(r => {
-            console.log(r)
             const newElement = document.createElement("option")
             newElement.value = r.roomName
             newElement.textContent = r.roomName
@@ -55,6 +53,11 @@ sizerForm.onsubmit = (e) => {
     resizeRoom(wid, len)
 }
 
+const newRoomForm = document.getElementById("room-saver")
+newRoomForm.onsubmit = (e) => {
+
+}
+
 const clearRoom = () =>
 {
     ctx.clearRect(0,0,room.width,room.height)
@@ -76,22 +79,32 @@ const reDraw = () => {
 // ctx.fillStyle = 'red';
 // ctx.fillRect(80, 60, 140, 30);
 // ctx.translate(-150, -75);
+
     let i = 0
     drawnItems.forEach(d => {
         ++i
-        console.log(d)
         if (d.deleted === false) {
             ctx.save()
-            console.log(ctx)
             var rad = d.rotation * Math.PI / 180;
-            ctx.translate(d.xPos + d.xSize / 2, d.yPos + d.ySize / 2)
+            var resetRad = (2 * Math.PI) - rad
             ctx.rotate(rad)
-            ctx.translate(-1 * d.xPos + d.xSize / 2, -1 * d.yPos + d.ySize / 2)
-            console.log("draw", i)
-            ctx.drawImage(d.image, d.xPos - d.xSize, d.yPos, d.xSize, d.ySize)
-            // ctx.drawImage(d.image, 0,0, d.xSize, d.ySize)
+            if (d.rotation == 90) {
+                rX = d.yPos
+                rY = (d.xPos + d.xSize) * -1
+            } else if (d.rotation == 180) {
+                rX = d.xPos * (-1) - d.xSize
+                rY = d.yPos * (-1) - d.ySize
+            } else if (d.rotation == 270) {
+                rX = (d.yPos + d.ySize) * (-1)
+                rY = d.xPos
+            } else if (d.rotation == 360){
+                d.rotation = 0
+                rX = d.xPos
+                rY = d.yPos
+            }
+            ctx.drawImage(d.image, rX, rY, d.xSize, d.ySize)
             ctx.restore()
-            console.log(ctx)
+            // ctx.rotate(resetRad)
             addItemToTable(d, d.name)
         }
     })
@@ -125,8 +138,6 @@ const addItemToTable = (drawnImage, itemName) => {
 
 const dragged = (e, imgSrc, itemName) => {
     const roomCont = room.getBoundingClientRect()
-    console.log(roomCont.right, roomCont.left, e.offsetX)
-    console.log(e)
     const ctx = room.getContext('2d')
     const image = new Image()
     xPos = e.offsetX - roomCont.left - dragStartDetails.xOffset
@@ -147,7 +158,6 @@ tub.ondragend = (e) => {
 tub.ondragstart = (e) => {
     dragStartDetails.xOffset = e.clientX
     dragStartDetails.yOffset = e.clientY
-    console.log(dragStartDetails)
 }
 
 room.addEventListener("mousedown", (e) => {
