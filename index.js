@@ -10,6 +10,7 @@ class drawnImage {
         this.name = _name
         this.xSize = 100
         this.ySize = 100
+        this.selected = false
     }
 }
 
@@ -28,11 +29,13 @@ class roomInfo {
     }
 }
 
+let selectedImage = {}
 const url = "http://localhost:3000/bathRooms"
 const currentRoomInfo = new roomInfo()
 const room = document.getElementById("room")
+const roomCont = room.getBoundingClientRect()
 const ctx = room.getContext('2d')
-const drawnItems = []
+let drawnItems = []
 const dragStartDetails = {
     xOffset: 0,
     yOffset: 0
@@ -41,9 +44,8 @@ const dragStartDetails = {
 const loadForm = document.getElementById("room-loader")
 loadForm.onsubmit = (e) => {
     e.preventDefault()
-    console.log(e.target["existing-rooms"].value)
     const lclUrl = url + "/" + e.target["existing-rooms"].value
-    drawnItems.length = 0
+    drawnItems = []
     let imageCount = 0
     fetch(lclUrl).then(res => {
         const r = res.json()
@@ -53,22 +55,16 @@ loadForm.onsubmit = (e) => {
         resizeRoom(room.width, room.length)
         room.elements.forEach(e => {
             imageCount++
-            console.log(imageCount, "+")
             const image = new Image()
-            console.log(e.imageSrc)
             image.onload = function(){
                 imageCount--
-                console.log(imageCount, "-")
                 const element = new drawnImage(image, e.imageSrc, e.xPos, e.yPos, e.name)
-                element.rotation = e.rotation
+                element.rotation = parseInt(e.rotation)
                 drawnItems.push(element)
+                drawItem(element)
             }
             image.src = e.imageSrc
         })
-        // while(imageCount != 0) { 
-        //     setTimeout(() => {}, 100)
-        // }
-        // reDraw()
     })
 }
 
@@ -104,6 +100,7 @@ const resizeRoom = (w, l) => {
 const sizerForm = document.getElementById("room-sizer")
 sizerForm.onsubmit = (e) => {
     e.preventDefault()
+    clearRoom()
     const wid = e.target["width"].value
     const len = e.target["length"].value
     resizeRoom(wid, len)
@@ -115,7 +112,6 @@ newRoomForm.onsubmit = (e) => {
     currentRoomInfo.elements = drawnItems
     const inputName = e.target["new-room-name"].value
     currentRoomInfo.roomName = inputName
-    console.log(currentRoomInfo)
     fetch(url, {
         method:'POST',
         headers: {
@@ -134,39 +130,42 @@ const clearRoom = () =>
     document.getElementById("item-list-body").innerHTML = ''
 }
 
+const drawItem = item => {
+    if (item.deleted === false) {
+        ctx.save()
+        var rad = item.rotation * Math.PI / 180;
+        var resetRad = (2 * Math.PI) - rad
+        ctx.rotate(rad)
+        if (item.rotation == 90) {
+            rX = item.yPos
+            rY = (item.xPos + item.xSize) * -1
+        } else if (item.rotation == 180) {
+            rX = item.xPos * (-1) - item.xSize
+            rY = item.yPos * (-1) - item.ySize
+        } else if (item.rotation == 270) {
+            rX = (item.yPos + item.ySize) * (-1)
+            rY = item.xPos
+        } else {
+            item.rotation = 0
+            rX = item.xPos
+            rY = item.yPos
+        }
+        ctx.drawImage(item.image, rX, rY, item.xSize, item.ySize)
+        // ctx.rect(rX, rY, d.xSize, d.ySize)
+        // ctx.strokeStyle = "black"
+        // ctx.stroke()
+        ctx.restore()
+        // ctx.rotate(resetRad)
+        addItemToTable(item, item.name)
+    }
+}
+
 const reDraw = () => {
     clearRoom()
 
     let i = 0
     drawnItems.forEach(d => {
-        console.log(d)
-        if (d.deleted === false) {
-            ctx.save()
-            var rad = d.rotation * Math.PI / 180;
-            var resetRad = (2 * Math.PI) - rad
-            ctx.rotate(rad)
-            if (d.rotation == 90) {
-                rX = d.yPos
-                rY = (d.xPos + d.xSize) * -1
-            } else if (d.rotation == 180) {
-                rX = d.xPos * (-1) - d.xSize
-                rY = d.yPos * (-1) - d.ySize
-            } else if (d.rotation == 270) {
-                rX = (d.yPos + d.ySize) * (-1)
-                rY = d.xPos
-            } else if (d.rotation == 360){
-                d.rotation = 0
-                rX = d.xPos
-                rY = d.yPos
-            }
-            ctx.drawImage(d.image, rX, rY, d.xSize, d.ySize)
-            // ctx.rect(rX, rY, d.xSize, d.ySize)
-            // ctx.strokeStyle = "black"
-            // ctx.stroke()
-            ctx.restore()
-            // ctx.rotate(resetRad)
-            addItemToTable(d, d.name)
-        }
+        drawItem(d)
     })
 }
 
@@ -187,6 +186,7 @@ const addItemToTable = (drawnImage, itemName) => {
         drawnImage.rotation += 90
         reDraw()
     }
+    newRotateButton.style.margin = "10px"
 
     const newResizeButton = document.createElement("button")
     newResizeButton.textContent = "Resize"
@@ -201,6 +201,7 @@ const addItemToTable = (drawnImage, itemName) => {
             reDraw()
         }
     }
+    newResizeButton.style.margin = "10px"
     
     const newRemoveButton = document.createElement("button")
     newRemoveButton.textContent = "Remove"
@@ -208,10 +209,32 @@ const addItemToTable = (drawnImage, itemName) => {
         drawnImage.deleted = true
         reDraw()
     }
+    newRemoveButton.style.margin = "10px"
+
     newRow.appendChild(newData)
     newRow.appendChild(newRotateButton)
     newRow.appendChild(newResizeButton)
     newRow.appendChild(newRemoveButton)
+
+    // newRow.onclick = (e) => {
+    //     console.log(e)
+    //     if (e.target.nodeName == 'TR')
+    //     {
+    //         drawnImage.selected = true
+    //         selectedImage = drawnImage
+    //         reDraw()
+    //     }
+    // }
+
+    console.log("selected: ", drawnImage.selected)
+    if (drawnImage.selected)
+    {
+        newRow.style.background = "pink"
+    }
+    else
+    {
+        newRow.style.background = "white"
+    }
     itemTable.appendChild(newRow)
 }
 
@@ -219,19 +242,24 @@ const dragged = (e, imgSrc, itemName) => {
     const roomCont = room.getBoundingClientRect()
     const ctx = room.getContext('2d')
     const image = new Image()
-    xPos = e.offsetX - roomCont.left - dragStartDetails.xOffset
-    yPos = e.offsetY - roomCont.top - dragStartDetails.yOffset
-    image.onload = function(){
-        ctx.drawImage(image, xPos, yPos, 100, 100)
-        ctx.rect(xPos, yPos, 100, 100)
-        ctx.strokeStyle = "black"
-        ctx.stroke()
+    if (e.offsetX > roomCont.left && e.offsetX < roomCont.right
+        && e.offsetY > roomCont.top && e.offsetY < roomCont.bottom
+        && document.getElementById("room-parent").style.display == "block")
+    {
+        xPos = e.offsetX - roomCont.left - dragStartDetails.xOffset
+        yPos = e.offsetY - roomCont.top - dragStartDetails.yOffset
+        image.onload = function(){
+            ctx.drawImage(image, xPos, yPos, 100, 100)
+            ctx.rect(xPos, yPos, 100, 100)
+            ctx.strokeStyle = "black"
+            ctx.stroke()
+        }
+        image.src = imgSrc
+        image.style.border = "solid"
+        const newDrawnImage = new drawnImage(image, imgSrc, xPos, yPos, itemName)
+        addItemToTable(newDrawnImage, itemName)
+        drawnItems.push(newDrawnImage)
     }
-    image.src = imgSrc
-    image.style.border = "solid"
-    const newDrawnImage = new drawnImage(image, imgSrc, xPos, yPos, itemName)
-    addItemToTable(newDrawnImage, itemName)
-    drawnItems.push(newDrawnImage)
 }
 
 //#region /* draggable icons */
@@ -240,7 +268,6 @@ toilet.ondragend = (e) => {
     dragged(e, "/imgs/toilet.png", "Toilet")
 }
 toilet.ondragstart = (e) => {
-    console.log(e)
     dragStartDetails.xOffset = e.offsetX
     dragStartDetails.yOffset = e.offsetY
 }
@@ -255,14 +282,69 @@ tub.ondragstart = (e) => {
 }
 //#endregion
 
+const findImage = (x, y) => {
+    const roomCont = room.getBoundingClientRect()
+    drawnItems.forEach(element => {
+        elementAbsPos = {
+            x: element.xPos + roomCont.left,
+            y: element.yPos + roomCont.top
+        }
+        
+        if (x > elementAbsPos.x && x < (elementAbsPos.x + 100) &&
+            y > elementAbsPos.y && y < (elementAbsPos.y + 100))
+        {
+            selectedImage.selected = false
+            selectedImage = element;
+            selectedImage.selected = true
+            reDraw()
+        }
+    });
+}
+
 room.addEventListener("mousedown", (e) => {
     e.preventDefault()
-    console.log(e.clientX, e.clientY)
+    findImage(e.clientX, e.clientY)
     return false
 })
 room.addEventListener("contextmenu", (e) => {
     e.preventDefault();
     return false;
 });
+
+const arrowUp = 38
+const arrowDown = 40
+const arrowLeft = 37
+const arrowRight = 39
+document.onkeydown = (e) => {
+    if (typeof(selectedImage.name) != "undefined")
+    {
+        if (e.key == "ArrowRight")
+        {
+            selectedImage.xPos += 5
+            reDraw()
+        }
+        else if (e.key == "ArrowLeft")
+        {
+            selectedImage.xPos -= 5
+            reDraw()
+        }
+        else if (e.key == "ArrowUp")
+        {
+            selectedImage.yPos -= 5
+            reDraw()
+        }
+        else if (e.key == "ArrowDown")
+        {
+            selectedImage.yPos += 5
+            reDraw()
+        }
+        else if (e.key == "Enter")
+        {
+            selectedImage.selected = false
+            selectedImage = {}
+            reDraw()
+        }
+    }
+}
 
 loadRooms()

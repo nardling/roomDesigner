@@ -89,6 +89,74 @@
         }
       ],
       "roomName": "Room2"
+    },
+    {
+      "id": 3,
+      "length": "4",
+      "width": "1",
+      "elements": [
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "/imgs/bathtub.png",
+          "xPos": 83,
+          "yPos": -7,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Bath Tub",
+          "xSize": 100,
+          "ySize": 100,
+          "selected": false
+        },
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "/imgs/bathtub.png",
+          "xPos": 353,
+          "yPos": 11,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Bath Tub",
+          "xSize": 100,
+          "ySize": 100,
+          "selected": false
+        }
+      ],
+      "roomName": "Moved"
+    },
+    {
+      "id": 4,
+      "length": "4",
+      "width": "1",
+      "elements": [
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "/imgs/bathtub.png",
+          "xPos": 83,
+          "yPos": -7,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Bath Tub",
+          "xSize": 100,
+          "ySize": 100,
+          "selected": false
+        },
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "/imgs/bathtub.png",
+          "xPos": 218,
+          "yPos": 11,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Bath Tub",
+          "xSize": 100,
+          "ySize": 100,
+          "selected": true
+        }
+      ],
+      "roomName": "Moved2"
     }
   ]
 }
