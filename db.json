@@ -6,6 +6,89 @@
       "length": 0,
       "width": 0,
       "elements": []
+    },
+    {
+      "id": 0,
+      "length": "4",
+      "width": "3",
+      "elements": [
+        {
+          "id": 0,
+          "imageSrc": "/imgs/bathtub.png",
+          "xPos": 163,
+          "yPos": 108,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Bath Tub",
+          "xSize": 100,
+          "ySize": 100
+        }
+      ],
+      "roomName": "DFD"
+    },
+    {
+      "id": 1,
+      "length": "4",
+      "width": "4",
+      "elements": [
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "http://127.0.0.1:5555/imgs/bathtub.png",
+          "xPos": 51,
+          "yPos": 118,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Bath Tub",
+          "xSize": 100,
+          "ySize": 100
+        },
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "http://127.0.0.1:5555/imgs/toilet.png",
+          "xPos": 131,
+          "yPos": 180,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Toilet",
+          "xSize": 100,
+          "ySize": 100
+        }
+      ],
+      "roomName": "Room1"
+    },
+    {
+      "id": 2,
+      "length": "8",
+      "width": "3",
+      "elements": [
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "/imgs/bathtub.png",
+          "xPos": 69,
+          "yPos": 3,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Bath Tub",
+          "xSize": 100,
+          "ySize": 100
+        },
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "/imgs/toilet.png",
+          "xPos": 244,
+          "yPos": 26,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Toilet",
+          "xSize": 100,
+          "ySize": 100
+        }
+      ],
+      "roomName": "Room2"
     }
   ]
 }

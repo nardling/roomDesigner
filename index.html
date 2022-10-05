@@ -6,7 +6,7 @@
     <body>
         <div id="icons">
             <img id="tub-icon" src="/imgs/bathtub.png" width="100" height="100" draggable="true">
-            <img src="/imgs/toilet.png" width="100" height="100" draggable="true">
+            <img id="toilet-icon" src="/imgs/toilet.png" width="100" height="100" draggable="true">
         </div>
         <form id="room-sizer">
             <label for="width">Width</label>
@@ -27,9 +27,9 @@
                 <table id="item-list">
                     <thead>
                         <th>Item</th>
-                        <th>Rotate</th>
-                        <th>Resize</th>
-                        <th>Remove</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
                     </thead>
                     <tbody id = "item-list-body">
                     </tbody>
@@ -38,6 +38,13 @@
                     <label for="new-room-name">Room Name</label>
                     <input name="new-room-name" id="new-room-name"/>
                     <input type="submit" id="new-room-submit" value="Save Room"/>
+                </form>
+                <form id="resize-form" hidden>
+                    <label for="new-item-width">Width</label>
+                    <input name="new-item-width" id="new-item-width"/>
+                    <label for="new-item-length">Length</label>
+                    <input name="new-item-length" id="new-item-length"/>
+                    <input type="submit" id="new-item-submit" value="Resize"/>
                 </form>
             </div>
         </div>
