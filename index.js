@@ -226,7 +226,6 @@ const addItemToTable = (drawnImage, itemName) => {
     //     }
     // }
 
-    console.log("selected: ", drawnImage.selected)
     if (drawnImage.selected)
     {
         newRow.style.background = "pink"
@@ -277,6 +276,24 @@ tub.ondragend = (e) => {
     dragged(e, "/imgs/bathtub.png", "Bath Tub")
 }
 tub.ondragstart = (e) => {
+    dragStartDetails.xOffset = e.offsetX
+    dragStartDetails.yOffset = e.offsetY
+}
+
+const shower = document.getElementById("shower-icon")
+shower.ondragend = (e) => {
+    dragged(e, "/imgs/shower.png", "Shower")
+}
+shower.ondragstart = (e) => {
+    dragStartDetails.xOffset = e.offsetX
+    dragStartDetails.yOffset = e.offsetY
+}
+
+const sink = document.getElementById("sink-icon")
+sink.ondragend = (e) => {
+    dragged(e, "/imgs/sink.png", "Sink")
+}
+sink.ondragstart = (e) => {
     dragStartDetails.xOffset = e.offsetX
     dragStartDetails.yOffset = e.offsetY
 }
