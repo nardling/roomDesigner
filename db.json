@@ -157,6 +157,27 @@
         }
       ],
       "roomName": "Moved2"
+    },
+    {
+      "id": 5,
+      "length": "11",
+      "width": "7",
+      "elements": [
+        {
+          "id": 0,
+          "image": {},
+          "imageSrc": "/imgs/shower.png",
+          "xPos": 400,
+          "yPos": 4,
+          "rotation": 0,
+          "deleted": false,
+          "name": "Stall Shower",
+          "xSize": 100,
+          "ySize": 100,
+          "selected": false
+        }
+      ],
+      "roomName": "NameTest"
     }
   ]
 }

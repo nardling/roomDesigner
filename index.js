@@ -45,13 +45,14 @@ const loadForm = document.getElementById("room-loader")
 loadForm.onsubmit = (e) => {
     e.preventDefault()
     const lclUrl = url + "/" + e.target["existing-rooms"].value
-    drawnItems = []
     let imageCount = 0
     fetch(lclUrl).then(res => {
         const r = res.json()
         return r
     })
     .then(room => {
+        drawnItems = []
+        clearRoom()
         resizeRoom(room.width, room.length)
         room.elements.forEach(e => {
             imageCount++
@@ -173,8 +174,13 @@ const resizeItem = (image, width, length) => {
 const addItemToTable = (drawnImage, itemName) => {
     const itemTable = document.getElementById("item-list-body")
     const newRow = document.createElement("tr")
+
     const newData = document.createElement("td")
+    newData.contentEditable = 'true'
     newData.textContent = itemName
+    newData.onblur = (e) => {
+        drawnImage.name = newData.textContent
+    }
     
     const newRotateButton = document.createElement("button")
     newRotateButton.textContent = "Rotate"
@@ -211,16 +217,6 @@ const addItemToTable = (drawnImage, itemName) => {
     newRow.appendChild(newRotateButton)
     newRow.appendChild(newResizeButton)
     newRow.appendChild(newRemoveButton)
-
-    // newRow.onclick = (e) => {
-    //     console.log(e)
-    //     if (e.target.nodeName == 'TR')
-    //     {
-    //         drawnImage.selected = true
-    //         selectedImage = drawnImage
-    //         reDraw()
-    //     }
-    // }
 
     if (drawnImage.selected)
     {
