@@ -151,11 +151,7 @@ const drawItem = item => {
             rY = item.yPos
         }
         ctx.drawImage(item.image, rX, rY, item.xSize, item.ySize)
-        // ctx.rect(rX, rY, d.xSize, d.ySize)
-        // ctx.strokeStyle = "black"
-        // ctx.stroke()
         ctx.restore()
-        // ctx.rotate(resetRad)
         addItemToTable(item, item.name)
     }
 }
@@ -241,17 +237,22 @@ const dragged = (e, imgSrc, itemName) => {
     const roomCont = room.getBoundingClientRect()
     const ctx = room.getContext('2d')
     const image = new Image()
-    if (e.offsetX > roomCont.left && e.offsetX < roomCont.right
-        && e.offsetY > roomCont.top && e.offsetY < roomCont.bottom
+    let xPos = e.x - dragStartDetails.xOffset
+    let yPos = e.y - dragStartDetails.yOffset
+    console.log(e.offsetX, e.offsetY)
+    console.log(e)
+    if (xPos > roomCont.left && xPos < roomCont.right
+        && yPos > roomCont.top && yPos < roomCont.bottom
         && document.getElementById("room-parent").style.display == "block")
     {
-        xPos = e.offsetX - roomCont.left - dragStartDetails.xOffset
-        yPos = e.offsetY - roomCont.top - dragStartDetails.yOffset
+        xPos -= roomCont.left
+        yPos -= roomCont.top
         image.onload = function(){
             ctx.drawImage(image, xPos, yPos, 100, 100)
-            ctx.rect(xPos, yPos, 100, 100)
-            ctx.strokeStyle = "black"
-            ctx.stroke()
+            // ctx.drawImage(image, 0, 0, 100, 100)
+            // ctx.rect(xPos, yPos, 100, 100)
+            // ctx.strokeStyle = "black"
+            // ctx.stroke()
         }
         image.src = imgSrc
         image.style.border = "solid"
